@@ -1,17 +1,14 @@
 import React, { FC, ReactNode, useReducer } from "react";
 import clsx from "clsx";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
-import { CssBaseline, Card, Typography } from "@material-ui/core";
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
+import { CssBaseline } from "@material-ui/core";
 // components
 import Header from "../../../components/Header";
 import Navigation from "../../../components/Navigation";
 import Footer from "../../../components/Footer";
 
 // constants
-import { DRAWER_WIDTH, FOOTER_HEIGHT } from "../../../utils/constants";
+import { FOOTER_HEIGHT } from "../../../utils/constants";
 
 // define css-in-js
 const useStyles = makeStyles((theme: Theme) =>
@@ -39,12 +36,11 @@ const useStyles = makeStyles((theme: Theme) =>
         easing: theme.transitions.easing.easeOut,
         duration: theme.transitions.duration.enteringScreen,
       }),
-      marginLeft: DRAWER_WIDTH,
     },
     bullet: {
-      display: 'inline-block',
-      margin: '0 2px',
-      transform: 'scale(0.8)',
+      display: "inline-block",
+      margin: "0 2px",
+      transform: "scale(0.8)",
     },
     title: {
       fontSize: 14,
@@ -65,7 +61,7 @@ interface Props {
 // functional component
 const Layout: FC<Props> = ({ toggleTheme, useDefaultTheme, children }) => {
   const classes = useStyles();
-  const [open, toggle] = useReducer((open) => !open, true);
+  const [open, toggle] = useReducer((open) => !open, false);
   return (
     <div className={classes.root}>
       <CssBaseline />

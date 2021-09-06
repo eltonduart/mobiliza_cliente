@@ -9,7 +9,7 @@ import Navigation from "./Navigation";
 import Footer from "./Footer";
 
 // constants
-import { DRAWER_WIDTH, FOOTER_HEIGHT } from "../utils/constants";
+import { FOOTER_HEIGHT } from "../utils/constants";
 
 // define css-in-js
 const useStyles = makeStyles((theme: Theme) =>
@@ -37,7 +37,6 @@ const useStyles = makeStyles((theme: Theme) =>
         easing: theme.transitions.easing.easeOut,
         duration: theme.transitions.duration.enteringScreen,
       }),
-      marginLeft: DRAWER_WIDTH,
     },
   })
 );
@@ -52,7 +51,7 @@ interface Props {
 // functional component
 const Layout: FC<Props> = ({ toggleTheme, useDefaultTheme, children }) => {
   const classes = useStyles();
-  const [open, toggle] = useReducer((open) => !open, true);
+  const [open, toggle] = useReducer((open) => !open, false);
   return (
     <div className={classes.root}>
       <CssBaseline />

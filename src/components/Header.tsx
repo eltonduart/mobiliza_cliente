@@ -7,13 +7,8 @@ import {
   CssBaseline,
   Typography,
   IconButton,
-  Tooltip,
 } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
-import Brightness7Icon from "@material-ui/icons/Brightness7";
-import Brightness3Icon from "@material-ui/icons/Brightness3";
-import UserIcon from "@material-ui/icons/AccountCircle";
-
 // constants
 import { APP_TITLE, DRAWER_WIDTH } from "../utils/constants";
 import { useAuth } from "../hooks/useAuth";
@@ -91,9 +86,7 @@ const Header: FC<Props> = ({
               aria-label="open menu"
               onClick={handleMenuOpen}
               edge="start"
-              className={clsx(classes.menuButton, {
-                [classes.hide]: open,
-              })}
+              className={clsx(classes.menuButton)}
               size="medium"
             >
               <MenuIcon />

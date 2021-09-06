@@ -1,7 +1,7 @@
-import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
-import { navigate } from '@reach/router';
+import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
+import { navigate } from "@reach/router";
 
-const baseURL = 'https://161.35.101.205';
+const baseURL = "http://161.35.101.205/";
 //const baseURL = process.env.REAC_APP_API_URL
 const api = axios.create({
   baseURL,
@@ -23,7 +23,7 @@ export interface RequestResponseSingle<T> {
 class Api {
   public static get<T>(
     url: string,
-    config: AxiosRequestConfig = {},
+    config: AxiosRequestConfig = {}
   ): Promise<AxiosResponse<T>> {
     return api.get<T, AxiosResponse<T>>(url, config);
   }
@@ -31,7 +31,7 @@ class Api {
   public static post<T>(
     url: string,
     data?: unknown,
-    config?: AxiosRequestConfig,
+    config?: AxiosRequestConfig
   ): Promise<AxiosResponse<T>> {
     return api.post<T, AxiosResponse>(url, data, config);
   }
@@ -39,7 +39,7 @@ class Api {
   public static put<T>(
     url: string,
     data?: unknown,
-    config?: AxiosRequestConfig,
+    config?: AxiosRequestConfig
   ): Promise<AxiosResponse<T>> {
     return api.put<T, AxiosResponse>(url, data, config);
   }
@@ -47,14 +47,14 @@ class Api {
   public static patch<T>(
     url: string,
     data?: unknown,
-    config?: AxiosRequestConfig,
+    config?: AxiosRequestConfig
   ): Promise<AxiosResponse<T>> {
     return api.patch<T, AxiosResponse>(url, data, config);
   }
 
   public static remove<T>(
     url: string,
-    config?: AxiosRequestConfig,
+    config?: AxiosRequestConfig
   ): Promise<AxiosResponse<T>> {
     return api.delete<T, AxiosResponse>(url, config);
   }
@@ -70,13 +70,13 @@ api.interceptors.response.use(
   },
   (err) => {
     if (err.response.status === 401) {
-      localStorage.removeItem('@Mobiliza:token');
-      localStorage.removeItem('@Mobiliza:user');
-      localStorage.removeItem('@Mobiliza:refreshToken');
-      navigate('/login');
+      localStorage.removeItem("@Mobiliza:token");
+      localStorage.removeItem("@Mobiliza:user");
+      localStorage.removeItem("@Mobiliza:refreshToken");
+      navigate("/login");
     }
     return Promise.reject(err);
-  },
+  }
 );
 
 export default Api;

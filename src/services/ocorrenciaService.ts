@@ -1,24 +1,26 @@
-import queryString, { parse } from 'query-string';
-import { EndPoints } from '../config/EndPoints';
-import { Ocorrencia } from '../domains/Ocorrencia';
-import Api, { RequestResponse } from './api';
-import { removeEmptyProperties } from '../helpers/removeEmptyProperties';
+import queryString from "query-string";
+import { EndPoints } from "../config/EndPoints";
+import { Ocorrencia } from "../domains/Ocorrencia";
+import Api, { RequestResponse } from "./api";
+import { removeEmptyProperties } from "../helpers/removeEmptyProperties";
 
 export const fetchOcorrencia = (
   _: string,
   search: { [key: string]: unknown },
   page = 0,
-  pageSize = 50,
+  pageSize = 50
 ): Promise<RequestResponse<Ocorrencia>> => {
-  const qrySearch = search ? `&${queryString.stringify(search)}` : '';
+  const qrySearch = search ? `&${queryString.stringify(search)}` : "";
 
   return Api.get<RequestResponse<Ocorrencia>>(
-    `${EndPoints.OCORRENCIA}?_page=${page || 0}&_limit=${pageSize || 50}${qrySearch}`,
+    `${EndPoints.OCORRENCIA}?_page=${page || 0}&_limit=${
+      pageSize || 50
+    }${qrySearch}`
   ).then((response) => {
     const resp = {
       data: response.data as any,
       meta: {
-        totalRecords: response.headers['x-total-count'],
+        totalRecords: response.headers["x-total-count"],
       },
     };
 
@@ -27,14 +29,19 @@ export const fetchOcorrencia = (
 };
 
 export const findOcorrencia = (id: number): Promise<Ocorrencia | undefined> => {
-  return Api.get<Ocorrencia>(`${EndPoints.OCORRENCIA}?id:${id}`).then((response) => {
-    return response.data;
-  });
+  return Api.get<Ocorrencia>(`${EndPoints.OCORRENCIA}?id:${id}`).then(
+    (response) => {
+      return response.data;
+    }
+  );
 };
 
 export const createOcorrencia = (ocorrencia: Ocorrencia): Promise<any> => {
   console.log(ocorrencia);
-  return Api.post(`${EndPoints.OCORRENCIA}`, removeEmptyProperties(ocorrencia as any));
+  return Api.post(
+    `${EndPoints.OCORRENCIA}`,
+    removeEmptyProperties(ocorrencia as any)
+  );
 };
 
 export const removeOcorrencia = (id: number | string): Promise<any> => {
