@@ -74,8 +74,8 @@ const SignIn = () => {
   const [loading, setLoading] = useState(false);
   const formik = useFormik({
     initialValues: {
-      email: "admin@email.com",
-      password: "admin",
+      email: "",
+      password: "",
     },
     validationSchema: validationSchema,
     onSubmit: async (data: SignInCredentials): Promise<void> => {
