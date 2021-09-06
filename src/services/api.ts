@@ -1,8 +1,8 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { navigate } from '@reach/router';
 
-const baseURL = process.env.REAC_APP_API_URL;
-
+const baseURL = 'http://161.35.101.205';
+//const baseURL = process.env.REAC_APP_API_URL
 const api = axios.create({
   baseURL,
 });
