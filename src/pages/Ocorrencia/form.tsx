@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
@@ -6,24 +6,18 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-import { People } from "@material-ui/icons";
 import { useFormik } from "formik";
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormControl from '@material-ui/core/FormControl';
-import Box from "@material-ui/core/Box";
-import Select from '@material-ui/core/Select';
-import InputLabel from '@material-ui/core/InputLabel';
-import { fetchMunicipios } from '../../services/municipioService';
-import { fetchDistrito } from '../../services/distritoService';
-import logo from '../../assets/logoC.png';
-import Link from "@material-ui/core/Link";
+import FormControl from "@material-ui/core/FormControl";
+import Select from "@material-ui/core/Select";
+import InputLabel from "@material-ui/core/InputLabel";
+import logo from "../../assets/logoC.png";
 import * as yup from "yup";
 
 import {
   createOcorrencia,
   updateOcorrencia,
-} from '../../services/ocorrenciaService';
-import { parseISO, format } from 'date-fns';
+} from "../../services/ocorrenciaService";
+import { parseISO, format } from "date-fns";
 import { useLocation } from "@reach/router";
 
 const useStyles = makeStyles((theme) => ({
@@ -45,10 +39,10 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(3, 0, 2),
   },
   images: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    width: '100%',
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    width: "100%",
   },
 }));
 
@@ -59,32 +53,21 @@ const validationSchema = yup.object({
     .typeError("A descrição é requerida."),
 });
 
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {"Copyright © "}
-      <Link color="textSecondary" href="www.index.com.br">
-        Index - Tecnologia e Gestão
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
-
 interface FormPessoaProps {
-  data: any
+  data: any;
   onSaveSuccess: (data: any) => void;
   onSaveError: (error: any) => void;
   onBack: () => void;
 }
 
-
-
-export default function FormPessoa({ data, onSaveSuccess, onBack, onSaveError }: FormPessoaProps) {
+export default function FormPessoa({
+  data,
+  onSaveSuccess,
+  onBack,
+  onSaveError,
+}: FormPessoaProps) {
   const classes = useStyles();
   const location = useLocation();
-
 
   const formik = useFormik({
     initialValues: { ...data },
@@ -98,9 +81,16 @@ export default function FormPessoa({ data, onSaveSuccess, onBack, onSaveError }:
       delete data.created_at;
       delete data.updated_at;
       if (data.id) {
-        updateOcorrencia({ ...data }).then((resp) => onSaveSuccess(resp.data)).catch((error) => onSaveError(error));
+        updateOcorrencia({ ...data })
+          .then((resp) => onSaveSuccess(resp.data))
+          .catch((error) => onSaveError(error));
       } else {
-        createOcorrencia({ ...data, pessoa_id: (location.state as any)?.pessoa_id }).then((resp) => onSaveSuccess(resp.data)).catch((error) => onSaveError(error));
+        createOcorrencia({
+          ...data,
+          pessoa_id: (location.state as any)?.pessoa_id,
+        })
+          .then((resp) => onSaveSuccess(resp.data))
+          .catch((error) => onSaveError(error));
       }
     },
   });
@@ -112,7 +102,7 @@ export default function FormPessoa({ data, onSaveSuccess, onBack, onSaveError }:
           <Typography component="h1" variant="h5">
             Ocorrencia
           </Typography>
-          <img src={logo} width={100} />
+          <img src={logo} width={100} alt="Mobiliza" />
         </div>
 
         <form
@@ -147,15 +137,25 @@ export default function FormPessoa({ data, onSaveSuccess, onBack, onSaveError }:
                 InputLabelProps={{
                   shrink: true,
                 }}
-                value={formik.values?.dta_previsao && format(parseISO(formik.values.dta_previsao), 'yyyy-MM-dd')}
+                value={
+                  formik.values?.dta_previsao &&
+                  format(parseISO(formik.values.dta_previsao), "yyyy-MM-dd")
+                }
                 onChange={formik.handleChange}
-                error={formik.touched.dta_previsao && Boolean(formik.errors.dta_previsao)}
-                helperText={formik.touched.dta_previsao && formik.errors.dta_previsao}
+                error={
+                  formik.touched.dta_previsao &&
+                  Boolean(formik.errors.dta_previsao)
+                }
+                helperText={
+                  formik.touched.dta_previsao && formik.errors.dta_previsao
+                }
               />
             </Grid>
             <Grid item xs={12} sm={12}>
               <FormControl variant="outlined" fullWidth>
-                <InputLabel htmlFor="outlined-age-native-simple">Status</InputLabel>
+                <InputLabel htmlFor="outlined-age-native-simple">
+                  Status
+                </InputLabel>
                 <Select
                   native
                   label="Status"
@@ -164,8 +164,8 @@ export default function FormPessoa({ data, onSaveSuccess, onBack, onSaveError }:
                   value={formik.values.concluida}
                   onChange={formik.handleChange}
                   inputProps={{
-                    name: 'concluida',
-                    id: 'outlined-age-native-simple',
+                    name: "concluida",
+                    id: "outlined-age-native-simple",
                   }}
                 >
                   <option aria-label="None" value="" />
@@ -195,7 +195,6 @@ export default function FormPessoa({ data, onSaveSuccess, onBack, onSaveError }:
           </Button>
         </form>
       </div>
-
     </Container>
   );
 }

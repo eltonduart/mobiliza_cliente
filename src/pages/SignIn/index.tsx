@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
@@ -8,7 +7,6 @@ import Checkbox from "@material-ui/core/Checkbox";
 import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
@@ -18,7 +16,7 @@ import * as yup from "yup";
 import { SignInCredentials } from "../../dtos/SignInCredentials";
 import { navigate } from "@reach/router";
 import { CircularProgress } from "@material-ui/core";
-import logo from '../../assets/logoC.png';
+import logo from "../../assets/logoC.png";
 
 function Copyright() {
   return (
@@ -52,8 +50,8 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(3, 0, 2),
   },
   images: {
-    display: 'flex',
-    width: '100%',
+    display: "flex",
+    width: "100%",
   },
 }));
 
@@ -80,11 +78,10 @@ const SignIn = () => {
     validationSchema: validationSchema,
     onSubmit: async (data: SignInCredentials): Promise<void> => {
       try {
-        debugger;
         setLoading(true);
         await signIn({ email: data.email, password: data.password });
         navigate("/");
-      } catch (error) { }
+      } catch (error) {}
       setLoading(false);
     },
   });
@@ -93,7 +90,7 @@ const SignIn = () => {
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
-        <img src={logo} width={300} />
+        <img src={logo} width={300} alt="Mobiliza" />
         <form
           className={classes.form}
           noValidate
@@ -156,11 +153,11 @@ const SignIn = () => {
             </Grid>
           </Grid>
         </form>
-      </div >
+      </div>
       <Box mt={8}>
         <Copyright />
       </Box>
-    </Container >
+    </Container>
   );
 };
 

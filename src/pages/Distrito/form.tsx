@@ -6,23 +6,15 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-import { People } from "@material-ui/icons";
 import { useFormik } from "formik";
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormControl from '@material-ui/core/FormControl';
-import Box from "@material-ui/core/Box";
-import Select from '@material-ui/core/Select';
-import InputLabel from '@material-ui/core/InputLabel';
-import { fetchMunicipios } from '../../services/municipioService';
-import logo from '../../assets/logoC.png';
-import Link from "@material-ui/core/Link";
+import FormControl from "@material-ui/core/FormControl";
+import Select from "@material-ui/core/Select";
+import InputLabel from "@material-ui/core/InputLabel";
+import { fetchMunicipios } from "../../services/municipioService";
+import logo from "../../assets/logoC.png";
 import * as yup from "yup";
 
-import {
-  createDistrito,
-  updateDistrito,
-} from '../../services/distritoService';
-import { parseISO, format } from 'date-fns';
+import { createDistrito, updateDistrito } from "../../services/distritoService";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -43,64 +35,54 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(3, 0, 2),
   },
   images: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    width: '100%',
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    width: "100%",
   },
 }));
 
 const validationSchema = yup.object({
-  nome: yup
-    .string()
-    .required("Nome requerido"),
-  municipio_id: yup
-    .string()
-    .required("Município requerido"),
+  nome: yup.string().required("Nome requerido"),
+  municipio_id: yup.string().required("Município requerido"),
 });
 
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {"Copyright © "}
-      <Link color="textSecondary" href="www.index.com.br">
-        Index - Tecnologia e Gestão
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
-
 interface FormDistritoProps {
-  data: any
+  data: any;
   onSaveSuccess: (data: any) => void;
   onSaveError: (error: any) => void;
   onBack: () => void;
 }
 
-
-
-export default function FormDistrito({ data, onSaveSuccess, onBack, onSaveError }: FormDistritoProps) {
+export default function FormDistrito({
+  data,
+  onSaveSuccess,
+  onBack,
+  onSaveError,
+}: FormDistritoProps) {
   const classes = useStyles();
   const [municipios, setMunicipios] = useState<any>();
   const formik = useFormik({
     initialValues: { ...data },
     enableReinitialize: true,
+    validationSchema,
     onSubmit: async (data: any): Promise<void> => {
       delete data.municipio;
       if (data.id) {
-        updateDistrito({ ...data }).then((resp) => onSaveSuccess(resp.data)).catch((error) => onSaveError(error));
+        updateDistrito({ ...data })
+          .then((resp) => onSaveSuccess(resp.data))
+          .catch((error) => onSaveError(error));
       } else {
-        createDistrito({ ...data }).then((resp) => onSaveSuccess(resp.data)).catch((error) => onSaveError(error));
-
+        createDistrito({ ...data })
+          .then((resp) => onSaveSuccess(resp.data))
+          .catch((error) => onSaveError(error));
       }
     },
   });
 
   useEffect(() => {
-    fetchMunicipios('', { nome: '' }).then((resp) => setMunicipios(resp.data));
-  }, [])
+    fetchMunicipios("", { nome: "" }).then((resp) => setMunicipios(resp.data));
+  }, []);
 
   return (
     <Container component="main" maxWidth="xs">
@@ -110,7 +92,7 @@ export default function FormDistrito({ data, onSaveSuccess, onBack, onSaveError 
           <Typography component="h1" variant="h5">
             Distrito
           </Typography>
-          <img src={logo} width={100} />
+          <img src={logo} width={100} alt="Mobiliza" />
         </div>
 
         <form
@@ -136,23 +118,27 @@ export default function FormDistrito({ data, onSaveSuccess, onBack, onSaveError 
             </Grid>
             <Grid item xs={12} sm={12}>
               <FormControl variant="outlined" fullWidth>
-                <InputLabel htmlFor="outlined-age-native-simple">Município</InputLabel>
+                <InputLabel htmlFor="outlined-age-native-simple">
+                  Município
+                </InputLabel>
                 <Select
                   native
                   required
-                  label={!formik.values.municipio_id && 'Município'}
+                  label={!formik.values.municipio_id && "Município"}
                   fullWidth
                   value={formik.values.municipio_id}
                   onChange={formik.handleChange}
-                  name='municipio_id'
+                  name="municipio_id"
                   inputProps={{
-                    name: 'municipio_id',
-                    id: 'outlined-age-native-simple',
+                    name: "municipio_id",
+                    id: "outlined-age-native-simple",
                   }}
                 >
                   <option aria-label="None" value="" />
                   {municipios?.map((municipio: any) => {
-                    return <option value={municipio.id}>{municipio.nome}</option>
+                    return (
+                      <option value={municipio.id}>{municipio.nome}</option>
+                    );
                   })}
                 </Select>
               </FormControl>
@@ -178,7 +164,6 @@ export default function FormDistrito({ data, onSaveSuccess, onBack, onSaveError 
           </Button>
         </form>
       </div>
-
     </Container>
   );
 }

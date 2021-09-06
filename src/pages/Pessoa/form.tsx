@@ -6,25 +6,21 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-import { People } from "@material-ui/icons";
 import { useFormik } from "formik";
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormControl from '@material-ui/core/FormControl';
-import Box from "@material-ui/core/Box";
-import Select from '@material-ui/core/Select';
-import InputLabel from '@material-ui/core/InputLabel';
-import { fetchMunicipios } from '../../services/municipioService';
-import { fetchDistrito } from '../../services/distritoService';
-import logo from '../../assets/logoC.png';
-import Link from "@material-ui/core/Link";
+import FormControl from "@material-ui/core/FormControl";
+import Select from "@material-ui/core/Select";
+import InputLabel from "@material-ui/core/InputLabel";
+import { fetchMunicipios } from "../../services/municipioService";
+import { fetchDistrito } from "../../services/distritoService";
+import logo from "../../assets/logoC.png";
 import * as yup from "yup";
 
 import {
   createPessoa,
   findPessoaCPF,
   updatePessoa,
-} from '../../services/pessoaService';
-import { parseISO, format } from 'date-fns';
+} from "../../services/pessoaService";
+import { parseISO, format } from "date-fns";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -45,10 +41,10 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(3, 0, 2),
   },
   images: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    width: '100%',
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    width: "100%",
   },
 }));
 
@@ -87,11 +83,15 @@ const validationSchema = yup.object({
     ),*/
     .string()
     .required("CPF requerido")
-    .test('checkCPFUnique', 'Este CPF já está registrado', async (value: any) => {
-      if (!value) return Promise.resolve(true)
-      const resp = await findPessoaCPF(value);
-      return !resp?.id
-    })
+    .test(
+      "checkCPFUnique",
+      "Este CPF já está registrado",
+      async (value: any) => {
+        if (!value) return Promise.resolve(true);
+        const resp = await findPessoaCPF(value);
+        return !resp?.id;
+      }
+    )
     .typeError("O número do CPF deve ser preenchido."),
   tipo_usuario: yup
     .string()
@@ -115,29 +115,19 @@ const validationSchema = yup.object({
     .typeError("O bairro deve ser preenchido."),
 });
 
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {"Copyright © "}
-      <Link color="textSecondary" href="www.index.com.br">
-        Index - Tecnologia e Gestão
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
-
 interface FormPessoaProps {
-  data: any
+  data: any;
   onSaveSuccess: (data: any) => void;
   onSaveError: (error: any) => void;
   onBack: () => void;
 }
 
-
-
-export default function FormPessoa({ data, onSaveSuccess, onBack, onSaveError }: FormPessoaProps) {
+export default function FormPessoa({
+  data,
+  onSaveSuccess,
+  onBack,
+  onSaveError,
+}: FormPessoaProps) {
   const classes = useStyles();
   const [municipios, setMunicipios] = useState<any>();
   const [distritos, setDistritos] = useState<any>();
@@ -157,28 +147,31 @@ export default function FormPessoa({ data, onSaveSuccess, onBack, onSaveError }:
       delete data.updated_at;
       delete data.municipio;
       if (data.id) {
-        updatePessoa({ ...data }).then((resp) => onSaveSuccess(resp.data)).catch((error) => onSaveError(error));
+        updatePessoa({ ...data })
+          .then((resp) => onSaveSuccess(resp.data))
+          .catch((error) => onSaveError(error));
       } else {
-        createPessoa({ ...data }).then((resp) => onSaveSuccess(resp.data)).catch((error) => onSaveError(error));
+        createPessoa({ ...data })
+          .then((resp) => onSaveSuccess(resp.data))
+          .catch((error) => onSaveError(error));
       }
     },
   });
 
   useEffect(() => {
-    fetchMunicipios('', { nome: '' }).then((resp) => setMunicipios(resp.data));
-    fetchDistrito('', { nome: '' }).then((respD) => setDistritos(respD.data));
-  }, [])
+    fetchMunicipios("", { nome: "" }).then((resp) => setMunicipios(resp.data));
+    fetchDistrito("", { nome: "" }).then((respD) => setDistritos(respD.data));
+  }, []);
 
   useEffect(() => {
     if (selectedMunicipio) {
-      const newdistritos: any = distritos.filter((distrito: any) =>
-        distrito.municipio_id === selectedMunicipio);
+      const newdistritos: any = distritos.filter(
+        (distrito: any) => distrito.municipio_id === selectedMunicipio
+      );
       console.log({ newdistritos, distritos });
       setfilteredDistritos(newdistritos);
     }
-
-  }, [distritos, selectedMunicipio])
-
+  }, [distritos, selectedMunicipio]);
 
   return (
     <Container component="main" maxWidth="xs">
@@ -188,7 +181,7 @@ export default function FormPessoa({ data, onSaveSuccess, onBack, onSaveError }:
           <Typography component="h1" variant="h5">
             Pessoa
           </Typography>
-          <img src={logo} width={100} />
+          <img src={logo} width={100} alt="Mobiliza" />
         </div>
 
         <form
@@ -210,7 +203,7 @@ export default function FormPessoa({ data, onSaveSuccess, onBack, onSaveError }:
                 onChange={formik.handleChange}
                 error={Boolean(formik.errors.cpf)}
                 helperText={formik.errors.cpf}
-                onBlur={() => formik.validateField('cpf')}
+                onBlur={() => formik.validateField("cpf")}
               />
             </Grid>
             <Grid item xs={12} sm={12}>
@@ -269,8 +262,13 @@ export default function FormPessoa({ data, onSaveSuccess, onBack, onSaveError }:
                 name="zona_eleitoral"
                 value={formik.values.zona_eleitoral}
                 onChange={formik.handleChange}
-                error={formik.touched.zona_eleitoral && Boolean(formik.errors.zona_eleitoral)}
-                helperText={formik.touched.zona_eleitoral && formik.errors.zona_eleitoral}
+                error={
+                  formik.touched.zona_eleitoral &&
+                  Boolean(formik.errors.zona_eleitoral)
+                }
+                helperText={
+                  formik.touched.zona_eleitoral && formik.errors.zona_eleitoral
+                }
               />
             </Grid>
             <Grid item xs={12} sm={12}>
@@ -283,8 +281,14 @@ export default function FormPessoa({ data, onSaveSuccess, onBack, onSaveError }:
                 name="secao_eleitoral"
                 value={formik.values.secao_eleitoral}
                 onChange={formik.handleChange}
-                error={formik.touched.secao_eleitoral && Boolean(formik.errors.secao_eleitoral)}
-                helperText={formik.touched.secao_eleitoral && formik.errors.secao_eleitoral}
+                error={
+                  formik.touched.secao_eleitoral &&
+                  Boolean(formik.errors.secao_eleitoral)
+                }
+                helperText={
+                  formik.touched.secao_eleitoral &&
+                  formik.errors.secao_eleitoral
+                }
               />
             </Grid>
             <Grid item xs={12} sm={12}>
@@ -312,10 +316,18 @@ export default function FormPessoa({ data, onSaveSuccess, onBack, onSaveError }:
                 InputLabelProps={{
                   shrink: true,
                 }}
-                value={formik.values?.dta_nascimento && format(parseISO(formik.values.dta_nascimento), 'yyyy-MM-dd')}
+                value={
+                  formik.values?.dta_nascimento &&
+                  format(parseISO(formik.values.dta_nascimento), "yyyy-MM-dd")
+                }
                 onChange={formik.handleChange}
-                error={formik.touched.dta_nascimento && Boolean(formik.errors.dta_nascimento)}
-                helperText={formik.touched.dta_nascimento && formik.errors.dta_nascimento}
+                error={
+                  formik.touched.dta_nascimento &&
+                  Boolean(formik.errors.dta_nascimento)
+                }
+                helperText={
+                  formik.touched.dta_nascimento && formik.errors.dta_nascimento
+                }
               />
             </Grid>
             <Grid item xs={12} sm={12}>
@@ -330,7 +342,9 @@ export default function FormPessoa({ data, onSaveSuccess, onBack, onSaveError }:
                   label="Endereço/Nº"
                   value={formik.values.endereco}
                   onChange={formik.handleChange}
-                  error={formik.touched.endereco && Boolean(formik.errors.endereco)}
+                  error={
+                    formik.touched.endereco && Boolean(formik.errors.endereco)
+                  }
                   helperText={formik.touched.endereco && formik.errors.endereco}
                 />
               </FormControl>
@@ -354,49 +368,55 @@ export default function FormPessoa({ data, onSaveSuccess, onBack, onSaveError }:
             </Grid>
             <Grid item xs={12} sm={12}>
               <FormControl variant="outlined" fullWidth>
-                <InputLabel htmlFor="outlined-age-native-simple">Município</InputLabel>
+                <InputLabel htmlFor="outlined-age-native-simple">
+                  Município
+                </InputLabel>
                 <Select
                   native
                   required
-                  label={!formik.values.municipio_id && 'Município'}
+                  label={!formik.values.municipio_id && "Município"}
                   fullWidth
                   value={formik.values.municipio_id}
                   onChange={(value) => {
                     formik.handleChange(value);
                     setselectedMunicipio(Number(value.target.value));
                   }}
-                  name='municipio_id'
+                  name="municipio_id"
                   inputProps={{
-                    name: 'municipio_id',
-                    id: 'outlined-age-native-simple',
+                    name: "municipio_id",
+                    id: "outlined-age-native-simple",
                   }}
                 >
                   <option aria-label="None" value="" />
                   {municipios?.map((municipio: any) => {
-                    return <option value={municipio.id}>{municipio.nome}</option>
+                    return (
+                      <option value={municipio.id}>{municipio.nome}</option>
+                    );
                   })}
                 </Select>
               </FormControl>
             </Grid>
             <Grid item xs={12} sm={12}>
               <FormControl variant="outlined" fullWidth>
-                <InputLabel htmlFor="outlined-age-native-simple">Distrito</InputLabel>
+                <InputLabel htmlFor="outlined-age-native-simple">
+                  Distrito
+                </InputLabel>
                 <Select
                   native
                   required
-                  label={!formik.values.distrito_id && 'Distrito'}
+                  label={!formik.values.distrito_id && "Distrito"}
                   fullWidth
                   value={formik.values.distrito_id}
                   onChange={formik.handleChange}
-                  name='distrito_id'
+                  name="distrito_id"
                   inputProps={{
-                    name: 'distrito_id',
-                    id: 'outlined-age-native-simple',
+                    name: "distrito_id",
+                    id: "outlined-age-native-simple",
                   }}
                 >
                   <option aria-label="None" value="" />
                   {filteredDistritos?.map((distrito: any) => {
-                    return <option value={distrito.id}>{distrito.nome}</option>
+                    return <option value={distrito.id}>{distrito.nome}</option>;
                   })}
                 </Select>
               </FormControl>
@@ -412,7 +432,9 @@ export default function FormPessoa({ data, onSaveSuccess, onBack, onSaveError }:
                 label="Telefone"
                 value={formik.values.telefone}
                 onChange={formik.handleChange}
-                error={formik.touched.telefone && Boolean(formik.errors.telefone)}
+                error={
+                  formik.touched.telefone && Boolean(formik.errors.telefone)
+                }
                 helperText={formik.touched.telefone && formik.errors.telefone}
               />
             </Grid>
@@ -426,7 +448,9 @@ export default function FormPessoa({ data, onSaveSuccess, onBack, onSaveError }:
                 label="Whatsapp"
                 value={formik.values.whatsapp}
                 onChange={formik.handleChange}
-                error={formik.touched.whatsapp && Boolean(formik.errors.whatsapp)}
+                error={
+                  formik.touched.whatsapp && Boolean(formik.errors.whatsapp)
+                }
                 helperText={formik.touched.whatsapp && formik.errors.whatsapp}
               />
             </Grid>
@@ -440,7 +464,9 @@ export default function FormPessoa({ data, onSaveSuccess, onBack, onSaveError }:
                 label="Facebook"
                 value={formik.values.facebook}
                 onChange={formik.handleChange}
-                error={formik.touched.facebook && Boolean(formik.errors.facebook)}
+                error={
+                  formik.touched.facebook && Boolean(formik.errors.facebook)
+                }
                 helperText={formik.touched.facebook && formik.errors.facebook}
               />
             </Grid>
@@ -455,8 +481,12 @@ export default function FormPessoa({ data, onSaveSuccess, onBack, onSaveError }:
                   label="Instagran"
                   value={formik.values.instagran}
                   onChange={formik.handleChange}
-                  error={formik.touched.instagran && Boolean(formik.errors.instagran)}
-                  helperText={formik.touched.instagran && formik.errors.instagran}
+                  error={
+                    formik.touched.instagran && Boolean(formik.errors.instagran)
+                  }
+                  helperText={
+                    formik.touched.instagran && formik.errors.instagran
+                  }
                 />
               </FormControl>
             </Grid>
@@ -478,7 +508,9 @@ export default function FormPessoa({ data, onSaveSuccess, onBack, onSaveError }:
             </Grid>
             <Grid item xs={12} sm={12}>
               <FormControl variant="outlined" fullWidth>
-                <InputLabel htmlFor="outlined-age-native-simple">Tipo de Usuário</InputLabel>
+                <InputLabel htmlFor="outlined-age-native-simple">
+                  Tipo de Usuário
+                </InputLabel>
                 <Select
                   native
                   label="Tipo de Usuário"
@@ -490,8 +522,8 @@ export default function FormPessoa({ data, onSaveSuccess, onBack, onSaveError }:
                     setselectedTipoU(Number(value.target.value));
                   }}
                   inputProps={{
-                    name: 'tipo_usuario',
-                    id: 'outlined-age-native-simple',
+                    name: "tipo_usuario",
+                    id: "outlined-age-native-simple",
                   }}
                 >
                   <option aria-label="None" value="" />
@@ -504,7 +536,9 @@ export default function FormPessoa({ data, onSaveSuccess, onBack, onSaveError }:
             </Grid>
             <Grid item xs={12} sm={12}>
               <FormControl variant="outlined" fullWidth>
-                <InputLabel htmlFor="outlined-age-native-simple">Status</InputLabel>
+                <InputLabel htmlFor="outlined-age-native-simple">
+                  Status
+                </InputLabel>
                 <Select
                   native
                   label="Status"
@@ -516,8 +550,8 @@ export default function FormPessoa({ data, onSaveSuccess, onBack, onSaveError }:
                     setselectedTipoU(Number(value.target.value));
                   }}
                   inputProps={{
-                    name: 'status',
-                    id: 'outlined-age-native-simple',
+                    name: "status",
+                    id: "outlined-age-native-simple",
                   }}
                 >
                   <option aria-label="None" value="" />
@@ -526,22 +560,28 @@ export default function FormPessoa({ data, onSaveSuccess, onBack, onSaveError }:
                 </Select>
               </FormControl>
             </Grid>
-            {[1, 2].includes(selectedTipoU) && <Grid item xs={12} sm={12}>
-              <FormControl variant="outlined" fullWidth>
-                <TextField
-                  variant="outlined"
-                  fullWidth
-                  id="password"
-                  label="Password"
-                  name="password"
-                  autoComplete="password"
-                  value={formik.values.password}
-                  onChange={formik.handleChange}
-                  error={formik.touched.password && Boolean(formik.errors.password)}
-                  helperText={formik.touched.password && formik.errors.password}
-                />
-              </FormControl>
-            </Grid>}
+            {[1, 2].includes(selectedTipoU) && (
+              <Grid item xs={12} sm={12}>
+                <FormControl variant="outlined" fullWidth>
+                  <TextField
+                    variant="outlined"
+                    fullWidth
+                    id="password"
+                    label="Password"
+                    name="password"
+                    autoComplete="password"
+                    value={formik.values.password}
+                    onChange={formik.handleChange}
+                    error={
+                      formik.touched.password && Boolean(formik.errors.password)
+                    }
+                    helperText={
+                      formik.touched.password && formik.errors.password
+                    }
+                  />
+                </FormControl>
+              </Grid>
+            )}
           </Grid>
 
           <Button
@@ -563,7 +603,6 @@ export default function FormPessoa({ data, onSaveSuccess, onBack, onSaveError }:
           </Button>
         </form>
       </div>
-
     </Container>
   );
 }

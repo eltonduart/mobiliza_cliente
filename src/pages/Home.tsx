@@ -1,16 +1,12 @@
 import React, { FC, ReactElement, useState, useEffect } from "react";
-import { fetchPessoa, removePessoa } from '../services/pessoaService';
+import { fetchPessoa } from "../services/pessoaService";
 import { Helmet } from "react-helmet";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
-import Grid from '@material-ui/core/Grid';
-import logo from '../assets/logoC.png';
-import { useSnackbar } from 'notistack';
-
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
+import Typography from "@material-ui/core/Typography";
+import Grid from "@material-ui/core/Grid";
+import { useSnackbar } from "notistack";
 
 // components
 import PageTitle from "../components/PageTitle";
@@ -29,9 +25,9 @@ const useStyles = makeStyles((theme: Theme) =>
       justifyContent: "space-between",
     },
     bullet: {
-      display: 'inline-block',
-      margin: '0 2px',
-      transform: 'scale(0.8)',
+      display: "inline-block",
+      margin: "0 2px",
+      transform: "scale(0.8)",
     },
     title: {
       fontSize: 14,
@@ -44,38 +40,40 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const Home: FC<{}> = (): ReactElement => {
   const classes = useStyles();
-  const bull = <span className={classes.bullet}>•</span>;
   const { enqueueSnackbar } = useSnackbar();
   const [rows, setRows] = useState<any>([]);
 
   const total = useMemo(() => {
     return rows.length;
-  }, [rows])
+  }, [rows]);
 
   const mobilizadores = useMemo(() => {
-    return rows.filter((row: any) => row.tipo_usuario == 3).length;
-  }, [rows])
+    return rows.filter((row: any) => Number(row.tipo_usuario) === 3).length;
+  }, [rows]);
 
   const eleitores = useMemo(() => {
-    return rows.filter((row: any) => row.tipo_usuario == 4).length;
-  }, [rows])
+    return rows.filter((row: any) => Number(row.tipo_usuario) === 4).length;
+  }, [rows]);
 
   const coordenadores = useMemo(() => {
-    return rows.filter((row: any) => row.tipo_usuario == 2).length;
-  }, [rows])
+    return rows.filter((row: any) => Number(row.tipo_usuario) === 2).length;
+  }, [rows]);
 
   const administradores = useMemo(() => {
-    return rows.filter((row: any) => row.tipo_usuario == 1).length;
-  }, [rows])
+    return rows.filter((row: any) => Number(row.tipo_usuario) === 1).length;
+  }, [rows]);
 
   useEffect(() => {
-    fetchPessoa({ nome: '' }).then((resp) => setRows(resp.data)).catch((error) => {
-      enqueueSnackbar(error.message, {
-        variant: 'error', transitionDuration: {
-          exit: 500,
-        }
+    fetchPessoa({ nome: "" })
+      .then((resp) => setRows(resp.data))
+      .catch((error) => {
+        enqueueSnackbar(error.message, {
+          variant: "error",
+          transitionDuration: {
+            exit: 500,
+          },
+        });
       });
-    });
   }, [enqueueSnackbar]);
   return (
     <>
@@ -91,7 +89,11 @@ const Home: FC<{}> = (): ReactElement => {
         <Grid item xs={12} sm={12}>
           <Card className={classes.root} variant="outlined">
             <CardContent>
-              <Typography className={classes.title} color="textSecondary" gutterBottom>
+              <Typography
+                className={classes.title}
+                color="textSecondary"
+                gutterBottom
+              >
                 Total
               </Typography>
               <Typography variant="h5" component="h2">
@@ -103,7 +105,11 @@ const Home: FC<{}> = (): ReactElement => {
         <Grid item xs={12} sm={12}>
           <Card className={classes.root} variant="outlined">
             <CardContent>
-              <Typography className={classes.title} color="textSecondary" gutterBottom>
+              <Typography
+                className={classes.title}
+                color="textSecondary"
+                gutterBottom
+              >
                 Eleitores
               </Typography>
               <Typography variant="h5" component="h2">
@@ -115,7 +121,11 @@ const Home: FC<{}> = (): ReactElement => {
         <Grid item xs={12} sm={12}>
           <Card className={classes.root} variant="outlined">
             <CardContent>
-              <Typography className={classes.title} color="textSecondary" gutterBottom>
+              <Typography
+                className={classes.title}
+                color="textSecondary"
+                gutterBottom
+              >
                 Mobilizadores
               </Typography>
               <Typography variant="h5" component="h2">
@@ -127,7 +137,11 @@ const Home: FC<{}> = (): ReactElement => {
         <Grid item xs={12} sm={12}>
           <Card className={classes.root} variant="outlined">
             <CardContent>
-              <Typography className={classes.title} color="textSecondary" gutterBottom>
+              <Typography
+                className={classes.title}
+                color="textSecondary"
+                gutterBottom
+              >
                 Coordenadores
               </Typography>
               <Typography variant="h5" component="h2">
@@ -139,7 +153,11 @@ const Home: FC<{}> = (): ReactElement => {
         <Grid item xs={12} sm={12}>
           <Card className={classes.root} variant="outlined">
             <CardContent>
-              <Typography className={classes.title} color="textSecondary" gutterBottom>
+              <Typography
+                className={classes.title}
+                color="textSecondary"
+                gutterBottom
+              >
                 Administradores
               </Typography>
               <Typography variant="h5" component="h2">
