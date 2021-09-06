@@ -81,7 +81,7 @@ const SignIn = () => {
         setLoading(true);
         await signIn({ email: data.email, password: data.password });
         navigate("/");
-      } catch (error) {}
+      } catch (error) { }
       setLoading(false);
     },
   });
@@ -126,10 +126,6 @@ const SignIn = () => {
             error={formik.touched.password && Boolean(formik.errors.password)}
             helperText={formik.touched.password && formik.errors.password}
           />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Me lembre"
-          />
           <Button
             type="submit"
             fullWidth
@@ -140,18 +136,6 @@ const SignIn = () => {
             {loading && <CircularProgress />}
             Logar
           </Button>
-          <Grid container>
-            <Grid item xs>
-              <Link href="#" variant="body2">
-                Esqueceu a senha?
-              </Link>
-            </Grid>
-            <Grid item>
-              <Link href="#" variant="body2">
-                {"Não possuo conta? Criar"}
-              </Link>
-            </Grid>
-          </Grid>
         </form>
       </div>
       <Box mt={8}>
