@@ -78,7 +78,6 @@ const SignIn = () => {
     validationSchema: validationSchema,
     onSubmit: async (data: SignInCredentials): Promise<void> => {
       try {
-        debugger;
         setLoading(true);
         await signIn({ email: data.email, password: data.password });
         navigate("/");
