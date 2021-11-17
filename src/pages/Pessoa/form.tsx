@@ -165,7 +165,7 @@ export default function FormPessoa({
 
   useEffect(() => {
     if (selectedMunicipio) {
-      const newdistritos: any = distritos.filter(
+      const newdistritos: any = distritos?.filter(
         (distrito: any) => distrito.municipio_id === selectedMunicipio
       );
       console.log({ newdistritos, distritos });
